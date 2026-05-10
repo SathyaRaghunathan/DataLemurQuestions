@@ -29,8 +29,8 @@ Example Output:
 | 1 | 2 |
 | 2 | 1 |
 '
-SELECT tweet_count AS tweet_bucket, COUNT(user_id) AS users_num FROM 
-(SELECT COUNT(tweet_id) AS tweet_count, user_id FROM tweets
-WHERE tweet_date BETWEEN '2022-01-01' AND '2022-12-31'
-GROUP BY user_id) AS tweet_count_sub
+WITH CTE1 AS (SELECT COUNT(tweet_id) AS tweet_bucket,
+user_id FROM tweets WHERE EXTRACT(YEAR FROM tweet_date) = 2022
+GROUP BY user_id)
+SELECT tweet_bucket, COUNT(user_id) AS users_num FROM CTE1
 GROUP BY tweet_bucket
