@@ -22,3 +22,7 @@ Explanation
 In this example, user_id 2 is the only one who has gone on a shopping spree.
 */
  
+ SELECT DISTINCT t1.user_id FROM transactions AS t1
+INNER JOIN transactions t2 ON DATE(t1.transaction_date)+1 = DATE(t2.transaction_date)
+INNER JOIN transactions t3 ON DATE(t1.transaction_date) +2 = DATE(t3.transaction_date)
+ORDER BY 1
