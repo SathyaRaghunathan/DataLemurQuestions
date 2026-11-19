@@ -28,16 +28,15 @@ In June 2022, there was only one monthly active user (MAU) with the user_id 445.
 Please note that the output provided is for June 2022 as the user_actions table only contains event dates for that month. You should adapt the solution accordingly for July 2022.
 */
 
-WITH june AS (SELECT * FROM user_actions WHERE 
-EXTRACT(MONTH FROM event_date) = '6'
-AND EXTRACT(YEAR FROM event_date)='2022'),
+WITH CTE1 AS (
+SELECT user_id FROM user_actions WHERE
+EXTRACT(YEAR FROM event_date) = '2022'
+AND EXTRACT(MONTH FROM event_date) = '7'
 
-july AS (
-SELECT * FROM user_actions WHERE
-EXTRACT(month FROM event_date) = '7'
-AND EXTRACT(YEAR FROM event_date)='2022')
+INTERSECT
 
-SELECT '7' AS mth, COUNT(DISTINCT june.user_id) AS monthly_active_users
-FROM june
-INNER JOIN july ON
-june.user_id = july.user_id
+SELECT user_id FROM user_actions WHERE
+EXTRACT(YEAR FROM event_date) = '2022'
+AND EXTRACT(MONTH FROM event_date) = '6')
+
+SELECT '7' AS mth, COUNT(*) FROM CTE1
